@@ -5,7 +5,9 @@ use lesson_6;
 -- Пример: 123456 ->'1 days 10 hours 17 minutes 36 seconds '
 
 DELIMITER //
-CREATE PROCEDURE time_period(seconds INT)
+CREATE FUNCTION time_period(seconds INT)
+RETURNS TEXT
+DETERMINISTIC
 BEGIN
 	DECLARE days, hours, minutes INT DEFAULT 0;
     DECLARE sec_per_minutes INT DEFAULT 60;
@@ -19,11 +21,11 @@ BEGIN
     SET days = hours DIV hours_per_days;
     SET hours = hours % hours_per_days;
 
-    SELECT concat(days, ' days ', hours, ' hours ', minutes, ' minutes ', seconds, ' seconds ') AS period;
-END //
+    RETURN concat(days, ' days ', hours, ' hours ', minutes, ' minutes ', seconds, ' seconds ');
+END; //
 DELIMITER ;
 
-CALL time_period(123456);
+SELECT time_period(123456);
 
 
 -- 2.	Выведите только четные числа от 1 до 10 включительно.
